@@ -1,0 +1,224 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Teko",
+  "scopeName": "source.teko",
+  "fileTypes": ["tks", "tkt"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#attributes" },
+    { "include": "#strings" },
+    { "include": "#chars" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#functions" },
+    { "include": "#operators" },
+    { "include": "#namespace" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.teko",
+          "begin": "//",
+          "end": "$"
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "storage.modifier.attribute.teko",
+          "match": "#(test|inject|singleton|scoped|transient|wire|os)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.interpolated.verbatim.teko",
+          "begin": "\\$@\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [{ "include": "#interpolation" }]
+        },
+        {
+          "name": "string.quoted.triple.interpolated.teko",
+          "begin": "\\$\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [
+            { "include": "#interpolation" },
+            { "include": "#string-escapes" }
+          ]
+        },
+        {
+          "name": "string.quoted.triple.verbatim.teko",
+          "begin": "@\"\"\"",
+          "end": "\"\"\""
+        },
+        {
+          "name": "string.quoted.triple.teko",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [{ "include": "#string-escapes" }]
+        },
+        {
+          "name": "string.quoted.double.interpolated.verbatim.teko",
+          "begin": "\\$@\"",
+          "end": "\"",
+          "patterns": [{ "include": "#interpolation" }]
+        },
+        {
+          "name": "string.quoted.double.interpolated.teko",
+          "begin": "\\$\"",
+          "end": "\"",
+          "patterns": [
+            { "include": "#interpolation" },
+            { "include": "#string-escapes" }
+          ]
+        },
+        {
+          "name": "string.quoted.double.verbatim.teko",
+          "begin": "@\"",
+          "end": "\""
+        },
+        {
+          "name": "string.quoted.double.teko",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [{ "include": "#string-escapes" }]
+        }
+      ]
+    },
+    "string-escapes": {
+      "patterns": [
+        {
+          "name": "constant.character.escape.teko",
+          "match": "\\\\(n|r|t|0|\\\\|\"|'|u\\{[0-9A-Fa-f]+\\})"
+        }
+      ]
+    },
+    "interpolation": {
+      "patterns": [
+        {
+          "name": "meta.interpolation.teko",
+          "begin": "\\{",
+          "end": "\\}",
+          "beginCaptures": {
+            "0": { "name": "punctuation.section.interpolation.begin.teko" }
+          },
+          "endCaptures": {
+            "0": { "name": "punctuation.section.interpolation.end.teko" }
+          },
+          "patterns": [{ "include": "$self" }]
+        }
+      ]
+    },
+    "chars": {
+      "patterns": [
+        {
+          "name": "string.quoted.single.byte.teko",
+          "match": "b'(\\\\.|[^'\\\\])'"
+        },
+        {
+          "name": "string.quoted.single.char.teko",
+          "match": "'(\\\\.|[^'\\\\])'"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.teko",
+          "match": "\\b[0-9][0-9_]*\\.[0-9][0-9_]*([eE][+-]?[0-9]+)?\\b"
+        },
+        {
+          "name": "constant.numeric.hex.teko",
+          "match": "\\b0[xX][0-9A-Fa-f][0-9A-Fa-f_]*\\b"
+        },
+        {
+          "name": "constant.numeric.integer.teko",
+          "match": "\\b[0-9][0-9_]*\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.teko",
+          "match": "\\b(match|loop|break|if|else|defer|return|await)\\b"
+        },
+        {
+          "name": "keyword.declaration.teko",
+          "match": "\\b(fn|let|mut|const|type|use|extern|params|async)\\b"
+        },
+        {
+          "name": "storage.modifier.teko",
+          "match": "\\b(pub|exp|intern|abstract|virtual|override)\\b"
+        },
+        {
+          "name": "keyword.other.type-kind.teko",
+          "match": "\\b(struct|class|interface|variant|enum|flags)\\b"
+        },
+        {
+          "name": "keyword.operator.word.teko",
+          "match": "\\b(in|to|as|from)\\b"
+        },
+        {
+          "name": "constant.language.teko",
+          "match": "\\b(null|true|false)\\b"
+        },
+        {
+          "name": "variable.language.self.teko",
+          "match": "\\b(self)\\b"
+        },
+        {
+          "name": "support.function.builtin.teko",
+          "match": "\\b(panic|exit|assert)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.primitive.teko",
+          "match": "\\b(i8|i16|i32|i64|i128|u8|u16|u32|u64|u128|f32|f64|bool|str|byte|char|void|error)\\b"
+        },
+        {
+          "name": "entity.name.type.teko",
+          "match": "\\b[A-Z][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "match": "\\b(fn)\\s+([a-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.declaration.fn.teko" },
+            "2": { "name": "entity.name.function.teko" }
+          }
+        },
+        {
+          "name": "entity.name.function.call.teko",
+          "match": "\\b[a-z_][A-Za-z0-9_]*(?=\\s*\\()"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.teko",
+          "match": "\\?\\?|\\?\\.|=>|->|\\.\\.|~|==|!=|<=|>=|&&|\\|\\||[+\\-*/%!<>=&|^?]"
+        }
+      ]
+    },
+    "namespace": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.namespace.teko",
+          "match": "::"
+        }
+      ]
+    }
+  }
+}
